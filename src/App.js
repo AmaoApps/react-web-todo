@@ -6,7 +6,7 @@ import { TodoSearch } from './components/TodoSearchComponent';
 import { TodoList } from './components/TodoListComponent';
 import { TodoItem } from './components/TodoItemComponent';
 import { CreateTodoButtom } from './components/CreatedButtonComponent';
-
+import { ThemeAppSwitcher } from './components/ThemeAppSwitcherComponent/ThemeAppSwitcherComponent';
 
 const todos = [
   { key: 1, text: 'Estudiar React', completed: true},
@@ -30,7 +30,7 @@ function App() {
       <CreateTodoButtom/>
       <button>+</button>
 
-
+      <ThemeAppSwitcher/>
     </React.Fragment> 
   );
 }
