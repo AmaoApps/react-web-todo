@@ -48,19 +48,37 @@ const styleBackground = {
   }
 }
 
-function App() {
+function useLocalStorage() {
 
-  const localStoragePayments = localStorage.getItem(LOCALSTORAGE_PAYMENTS)
-  let parsedPayments;
+  const localStorageItem = localStorage.getItem(LOCALSTORAGE_PAYMENTS)
+  let parsedItem;
 
-  if(!localStoragePayments) {
+  if(!localStorageItem) {
     localStorage.setItem(LOCALSTORAGE_PAYMENTS, JSON.stringify([]));
-    parsedPayments = [];
+    parsedItem = [];
   } else {
-    parsedPayments = JSON.parse(localStoragePayments);
+    parsedItem = JSON.parse(localStorageItem);
   }
 
-  const [payments, setPayments] = useState(parsedPayments);
+  const [item, setItem] = React.useState(parsedItem);
+
+  const saveItems = (newPayments) => {
+    let stringlifiedPayments = JSON.stringify(newPayments);
+    localStorage.setItem(LOCALSTORAGE_PAYMENTS, stringlifiedPayments)
+    setItem(newPayments);
+  }
+
+  return [
+    item,
+    saveItems
+  ]
+
+} 
+
+function App() {
+  const [payments, savePayments] = useLocalStorage();
+  //const [payments, setPayments] = useState(parsedItem);
+
 
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -95,11 +113,6 @@ function App() {
     setIsDarkTheme(!isDarkTheme);
   };
 
-  const savePayments = (newPayments) => {
-    let stringlifiedPayments = JSON.stringify(newPayments);
-    localStorage.setItem(LOCALSTORAGE_PAYMENTS, stringlifiedPayments)
-    setPayments(newPayments);
-  }
 
   return (
       <React.Fragment>
