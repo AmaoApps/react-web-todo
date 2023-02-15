@@ -7,11 +7,11 @@ import { TodoList } from './components/TodoListComponent';
 import { TodoItem } from './components/TodoItemComponent';
 import { CreateTodoButtom } from './components/CreatedButtonComponent';
 import { ThemeAppSwitcher } from './components/ThemeAppSwitcherComponent/ThemeAppSwitcherComponent';
-import { Button, Container, createTheme, Grid, ThemeProvider } from '@mui/material';
+import { Button, Container, createTheme, Grid, ThemeProvider, Stack } from '@mui/material';
 import Image from 'mui-image';
 import financyImage from "./assets/imgs/financy_web.png";
 import backgroundImageApp from "./assets/imgs/background_app.jpg"
-import { height } from '@mui/system';
+import { WelcomeUser } from './components/WelcomeUserComponent/WelcomeUserComponent';
 
 const todos = [
   { key: 1, text: 'Estudiar React', completed: true},
@@ -59,22 +59,26 @@ function App() {
           <Grid container >
               <Grid item md={6} lg={6} xl={6} sx={{ display: { xs: 'none', sm: 'none', md: 'block', lg: 'block', xl: 'block' }}}>
                 <Container maxWidth='md' style={styleBackground.backgroundCommonBackground} >
-                  <Image src={financyImage} height="100vh"/>
+                  <Stack>
+                    <WelcomeUser/>
+                    <Image src={financyImage} height="100vh" fit='contain'/>
+                  </Stack>
                 </Container>
               </Grid>
               <Grid item md={6} lg={6} xl={6}>
                 <Container maxWidth='md'>
-                  <TodoCounter/>
+                  <Stack>
+                    <TodoCounter/>
+                    <TodoSearch/>
+                    <TodoList>
+                      {todos.map(todo => (
+                        <TodoItem text={todo.text} key={todo.key}/>
+                      ))}
+                    </TodoList>
+                  </Stack>
                 </Container>
               </Grid>
           </Grid>
-          <TodoSearch/>
-
-          <TodoList>
-            {todos.map(todo => (
-              <TodoItem text={todo.text} key={todo.key}/>
-            ))}
-          </TodoList>
 
           <CreateTodoButtom/>
           <Button>+</Button>

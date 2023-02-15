@@ -1,0 +1,1 @@
+export const TEXTFIELD_SEARCH_PAYMENTS = 'Busca tus gastos';
