@@ -1,10 +1,8 @@
 import { FormControl, InputLabel, TextField, Stack } from "@mui/material";
 import React, { useState } from "react";
-import { TEXTFIELD_SEARCH_PAYMENTS } from "../utils/constants.js";
+import { TEXTFIELD_SEARCH_PAYMENTS } from "../../utils/constants.js";
 
-function TodoSearch() {
-
-    const [searchValue, setSearchValue] = useState('');
+function TodoSearch({searchValue, setSearchValue}) {
 
     return (
         <FormControl>

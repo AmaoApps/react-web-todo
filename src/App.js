@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import React, { useState } from 'react';
 import './App.css';
 import { TodoCounter } from './components/TodoCounterComponent/TodoCounterComponent';
-import { TodoSearch } from './components/TodoSearchComponent';
+import { TodoSearch } from './components/TodoSearchComponent/TodoSearchComponent';
 import { TodoList } from './components/TodoListComponent';
 import { TodoItem } from './components/TodoItemComponent';
 import { CreateTodoButtom } from './components/CreatedButtonComponent';
@@ -48,6 +48,24 @@ const styleBackground = {
 
 function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  const [payments, setPayments] = useState(todos);
+
+  const completedTodo = todos.filter(todo => todo.completed == true).length;
+  const totalTodos = todos.length;
+
+  var searchedValues = [];
+
+  if(searchValue.length>=1){
+    searchedValues = todos.filter(todo => {
+      const bodyText = todo.text.toLowerCase();
+      const searchText = searchValue.toLowerCase();
+      return bodyText.includes(searchText)
+    })
+  } else {
+    searchedValues = payments
+  }
 
   const changeTheme = () => {
     setIsDarkTheme(!isDarkTheme);
@@ -68,10 +86,16 @@ function App() {
               <Grid item md={6} lg={6} xl={6}>
                 <Container maxWidth='md'>
                   <Stack>
-                    <TodoCounter/>
-                    <TodoSearch/>
+                    <TodoCounter
+                      total={totalTodos}
+                      completedTodos={completedTodo}
+                    />
+                    <TodoSearch
+                      searchValue={searchValue}
+                      setSearchValue={setSearchValue}
+                    />
                     <TodoList>
-                      {todos.map(todo => (
+                      {searchedValues.map(todo => (
                         <TodoItem text={todo.text} key={todo.key}/>
                       ))}
                     </TodoList>
