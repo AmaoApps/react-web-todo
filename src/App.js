@@ -14,9 +14,9 @@ import backgroundImageApp from "./assets/imgs/background_app.jpg"
 import { WelcomeUser } from './components/WelcomeUserComponent/WelcomeUserComponent';
 
 const todos = [
-  { key: 1, text: 'Estudiar React', completed: true},
-  { key: 2, text: 'Responsive on React', completed: false},
-  { key: 3, text: 'Estilos en React', completed: false}
+  { id: 1, text: 'Estudiar React', completed: true},
+  { id: 2, text: 'Responsive on React', completed: false},
+  { id: 3, text: 'Estilos en React', completed: false}
 ]
 
 
@@ -52,13 +52,13 @@ function App() {
 
   const [payments, setPayments] = useState(todos);
 
-  const completedTodo = todos.filter(todo => todo.completed === true).length;
-  const totalTodos = todos.length;
+  const completedTodo = payments.filter(todo => todo.completed === true).length;
+  const totalTodos = payments.length;
 
   var searchedValues = [];
 
   if(searchValue.length>=1){
-    searchedValues = todos.filter(todo => {
+    searchedValues = payments.filter(todo => {
       const bodyText = todo.text.toLowerCase();
       const searchText = searchValue.toLowerCase();
       return bodyText.includes(searchText)
@@ -67,11 +67,13 @@ function App() {
     searchedValues = payments
   }
 
-  const completeTodo = (keyToComplete) => {
-    var todoIndexToComplete = todos.findIndex(todo => todo.key == keyToComplete);
+  const deletePayment = (idToDelete) => {
+    console.log("Deleteing in " + idToDelete)
+    console.log(idToDelete)
+    var todoIndexToDelete = payments.findIndex(todo => todo.id == idToDelete);
 
-    const newTodos = [...todos];
-    newTodos[todoIndexToComplete].completed = true;
+    const newTodos = [...payments];
+    newTodos.splice(todoIndexToDelete, 1);
     setPayments(newTodos);
   }
 
@@ -104,7 +106,11 @@ function App() {
                     />
                     <TodoList>
                       {searchedValues.map(todo => (
-                        <TodoItem text={todo.text} key={todo.key}/>
+                        <TodoItem key={todo.id}
+                          text={todo.text} 
+                          id={todo.id}
+                          onDelete={() => deletePayment(todo.id)}
+                        />
                       ))}
                     </TodoList>
                   </Stack>

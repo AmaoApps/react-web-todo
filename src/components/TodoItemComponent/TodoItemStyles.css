@@ -1,3 +1,7 @@
 .MuiCardHeader-action {
     margin: auto !important
 }
+
+.stack-card-content-action-payment {
+    margin-left: auto;
+}
