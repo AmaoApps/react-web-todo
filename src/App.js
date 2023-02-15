@@ -4,7 +4,7 @@ import './App.css';
 import { TodoCounter } from './components/TodoCounterComponent/TodoCounterComponent';
 import { TodoSearch } from './components/TodoSearchComponent/TodoSearchComponent';
 import { TodoList } from './components/TodoListComponent';
-import { TodoItem } from './components/TodoItemComponent';
+import { TodoItem } from './components/TodoItemComponent/TodoItemComponent';
 import { CreateTodoButtom } from './components/CreatedButtonComponent';
 import { ThemeAppSwitcher } from './components/ThemeAppSwitcherComponent/ThemeAppSwitcherComponent';
 import { Button, Container, createTheme, Grid, ThemeProvider, Stack } from '@mui/material';
@@ -52,7 +52,7 @@ function App() {
 
   const [payments, setPayments] = useState(todos);
 
-  const completedTodo = todos.filter(todo => todo.completed == true).length;
+  const completedTodo = todos.filter(todo => todo.completed === true).length;
   const totalTodos = todos.length;
 
   var searchedValues = [];
@@ -65,6 +65,14 @@ function App() {
     })
   } else {
     searchedValues = payments
+  }
+
+  const completeTodo = (keyToComplete) => {
+    var todoIndexToComplete = todos.findIndex(todo => todo.key == keyToComplete);
+
+    const newTodos = [...todos];
+    newTodos[todoIndexToComplete].completed = true;
+    setPayments(newTodos);
   }
 
   const changeTheme = () => {
@@ -83,8 +91,8 @@ function App() {
                   </Stack>
                 </Container>
               </Grid>
-              <Grid item md={6} lg={6} xl={6}>
-                <Container maxWidth='md'>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <Container maxWidth='lg'>
                   <Stack>
                     <TodoCounter
                       total={totalTodos}

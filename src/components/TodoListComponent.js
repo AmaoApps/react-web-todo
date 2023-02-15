@@ -1,10 +1,11 @@
+import { Stack } from "@mui/material";
 import React from "react";
 
 function TodoList(props) {
     return (
-        <section>
+        <Stack spacing={1}>
                 {props.children}
-        </section>
+        </Stack>
     );
 }
 
