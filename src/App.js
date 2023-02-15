@@ -12,12 +12,14 @@ import Image from 'mui-image';
 import financyImage from "./assets/imgs/financy_web.png";
 import backgroundImageApp from "./assets/imgs/background_app.jpg"
 import { WelcomeUser } from './components/WelcomeUserComponent/WelcomeUserComponent';
+import { LOCALSTORAGE_PAYMENTS } from './utils/constants';
 
+/*
 const todos = [
   { id: 1, text: 'Estudiar React', completed: true},
   { id: 2, text: 'Responsive on React', completed: false},
   { id: 3, text: 'Estilos en React', completed: false}
-]
+]*/
 
 
 const light = {
@@ -47,10 +49,22 @@ const styleBackground = {
 }
 
 function App() {
+
+  const localStoragePayments = localStorage.getItem(LOCALSTORAGE_PAYMENTS)
+  let parsedPayments;
+
+  if(!localStoragePayments) {
+    localStorage.setItem(LOCALSTORAGE_PAYMENTS, JSON.stringify([]));
+    parsedPayments = [];
+  } else {
+    parsedPayments = JSON.parse(localStoragePayments);
+  }
+
+  const [payments, setPayments] = useState(parsedPayments);
+
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
-  const [payments, setPayments] = useState(todos);
 
   const completedTodo = payments.filter(todo => todo.completed === true).length;
   const totalTodos = payments.length;
@@ -72,14 +86,20 @@ function App() {
     console.log(idToDelete)
     var todoIndexToDelete = payments.findIndex(todo => todo.id == idToDelete);
 
-    const newTodos = [...payments];
-    newTodos.splice(todoIndexToDelete, 1);
-    setPayments(newTodos);
+    const newPayments = [...payments];
+    newPayments.splice(todoIndexToDelete, 1);
+    savePayments(newPayments);
   }
 
   const changeTheme = () => {
     setIsDarkTheme(!isDarkTheme);
   };
+
+  const savePayments = (newPayments) => {
+    let stringlifiedPayments = JSON.stringify(newPayments);
+    localStorage.setItem(LOCALSTORAGE_PAYMENTS, stringlifiedPayments)
+    setPayments(newPayments);
+  }
 
   return (
       <React.Fragment>
