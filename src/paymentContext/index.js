@@ -6,13 +6,12 @@ const PaymentContext = React.createContext();
 function PaymentProvider(props) {
     const {
         item: payments, 
-        savePayments,
+        saveItems: savePayments,
         loading, 
         error
     } = useLocalStorage();
     
     const [searchValue, setSearchValue] = useState('');
-
 
     const completedTodo = payments.filter(todo => todo.completed === true).length;
     const totalTodos = payments.length;
@@ -39,6 +38,14 @@ function PaymentProvider(props) {
         savePayments(newPayments);
     }
 
+    const addPayment = (payment) => {
+        console.log(payment)
+        const newPayments = [...payments];
+        newPayments.push(payment);
+        console.log(newPayments)
+        savePayments(newPayments);
+    }
+
     return (
         <PaymentContext.Provider value={{
             loading, 
@@ -49,7 +56,8 @@ function PaymentProvider(props) {
             setSearchValue, 
             searchedValues, 
             completedTodo, 
-            deletePayment
+            deletePayment,
+            addPayment
         }}>
             {props.children}
         </PaymentContext.Provider>

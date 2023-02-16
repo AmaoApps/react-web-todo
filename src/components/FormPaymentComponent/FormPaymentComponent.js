@@ -1,11 +1,17 @@
 import { Button, ButtonGroup, FormControl, FormHelperText, Grid, Input, InputLabel, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
+import { PaymentContext } from "../../paymentContext";
+import uuid from 'react-uuid';
 
 function FormPayment() {
 
-    const [paymentMount, setPaymentMount] = React.useState(0);
+    const [paymentMount, setPaymentMount] = React.useState('');
     const [typeMoney, setTypeMoney] = React.useState("");
+
+    const {
+        addPayment
+    } = React.useContext(PaymentContext)
 
     return (
         <Grid maxWidth='xl'>
@@ -30,7 +36,11 @@ function FormPayment() {
                     />
                 </Stack>
                 <br/>
-                <Button variant="contained">Registrar</Button>
+                <Button variant="contained" onClick={()=>addPayment({
+                    id: uuid(),
+                    text: paymentMount,
+                    completed: false
+                })}>Registrar</Button>
             </FormControl>
         </Grid>
     );
