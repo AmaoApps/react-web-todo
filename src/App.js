@@ -14,6 +14,7 @@ import backgroundImageApp from "./assets/imgs/background_app.jpg"
 import { WelcomeUser } from './components/WelcomeUserComponent/WelcomeUserComponent';
 import { PaymentContext, PaymentProvider } from './paymentContext';
 import { PaymentAddModal } from './components/PaymentAddModalComponent/PaymentAddModal';
+import { FormPayment } from './components/FormPaymentComponent/FormPaymentComponent';
 
 /*
 const todos = [
@@ -110,26 +111,23 @@ function App() {
                           />
                         ))}
                       </TodoList>
-
+                      <Grid item md={12} lg={12} >
+                        <Button size="large" variant="outlined" onClick={handleOpen}> Agregar </Button>
+                      </Grid>
                     </Stack>
                   </Container>
                 </Grid>
             </Grid>
 
             <PaymentAddModal>
-              <Button onClick={handleOpen}>Open modal</Button>
               <Modal
                   open={open}
                   onClose={handleClose}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description">
                   <Box sx={styleModal}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                      Text in a modal
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                      Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </Typography>
+                    <FormPayment>
+                    </FormPayment>
                   </Box>
                 </Modal>
             </PaymentAddModal>
@@ -139,7 +137,6 @@ function App() {
             <Button onClick={() => changeTheme()}>Change Theme</Button>
 
             <ThemeAppSwitcher/>
-
         </ThemeProvider>
       </React.Fragment> 
   );
