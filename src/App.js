@@ -112,7 +112,7 @@ function App() {
                       </TodoList>
                       <br/>
                       <Grid item md={12} lg={12} >
-                        <Button size="large" variant="outlined" onClick={handleOpen}> Agregar </Button>
+                        <Button size="large" variant="contained" onClick={handleOpen}> Agregar </Button>
                       </Grid>
                     </Stack>
                   </Container>

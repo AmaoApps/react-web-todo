@@ -6,6 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React from "react";
 import './TodoItemStyles.css';
+import piggyPositive from '../../assets/icons/piggy_positive.svg'
+import piggyNegative from '../../assets/icons/piggy_negative.svg'
 
 
 const ExpandMore = styled((props) => {
@@ -32,7 +34,7 @@ function TodoItem(props) {
         <Card>
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                    <Avatar sx={{ padding: 0.25 }} aria-label="recipe" src={piggyPositive}>
                     +/-
                     </Avatar>
                 }
