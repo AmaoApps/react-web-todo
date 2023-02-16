@@ -5,7 +5,6 @@ import { TodoCounter } from './components/TodoCounterComponent/TodoCounterCompon
 import { TodoSearch } from './components/TodoSearchComponent/TodoSearchComponent';
 import { TodoList } from './components/PaymentListComponent/TodoListComponent';
 import { TodoItem } from './components/TodoItemComponent/TodoItemComponent';
-import { CreateTodoButtom } from './components/CreatedButtonComponent';
 import { ThemeAppSwitcher } from './components/ThemeAppSwitcherComponent/ThemeAppSwitcherComponent';
 import { Button, Container, createTheme, Grid, ThemeProvider, Stack, Modal, Box, Typography } from '@mui/material';
 import Image from 'mui-image';
@@ -111,6 +110,7 @@ function App() {
                           />
                         ))}
                       </TodoList>
+                      <br/>
                       <Grid item md={12} lg={12} >
                         <Button size="large" variant="outlined" onClick={handleOpen}> Agregar </Button>
                       </Grid>
@@ -131,11 +131,7 @@ function App() {
                   </Box>
                 </Modal>
             </PaymentAddModal>
-              
-            <CreateTodoButtom/>
-            <Button>+</Button>
             <Button onClick={() => changeTheme()}>Change Theme</Button>
-
             <ThemeAppSwitcher/>
         </ThemeProvider>
       </React.Fragment> 
