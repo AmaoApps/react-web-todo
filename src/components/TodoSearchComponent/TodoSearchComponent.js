@@ -1,8 +1,11 @@
 import { FormControl, InputLabel, TextField, Stack } from "@mui/material";
 import React, { useState } from "react";
+import { PaymentContext } from "../../paymentContext/index.js";
 import { TEXTFIELD_SEARCH_PAYMENTS } from "../../utils/constants.js";
 
-function TodoSearch({searchValue, setSearchValue}) {
+function TodoSearch() {
+
+    const {searchValue, setSearchValue} = React.useContext(PaymentContext);
 
     return (
         <FormControl>

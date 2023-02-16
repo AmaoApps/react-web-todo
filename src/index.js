@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { CssBaseline } from '@mui/material';
+import { PaymentProvider } from './paymentContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <CssBaseline />
-    <App />
+    <PaymentProvider>
+      <App />
+    </PaymentProvider>
   </React.StrictMode>
 );
 
