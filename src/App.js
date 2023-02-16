@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { TodoCounter } from './components/TodoCounterComponent/TodoCounterComponent';
 import { TodoSearch } from './components/TodoSearchComponent/TodoSearchComponent';
-import { TodoList } from './components/TodoListComponent';
+import { TodoList } from './components/PaymentListComponent/TodoListComponent';
 import { TodoItem } from './components/TodoItemComponent/TodoItemComponent';
 import { CreateTodoButtom } from './components/CreatedButtonComponent';
 import { ThemeAppSwitcher } from './components/ThemeAppSwitcherComponent/ThemeAppSwitcherComponent';
@@ -12,7 +12,7 @@ import Image from 'mui-image';
 import financyImage from "./assets/imgs/financy_web.png";
 import backgroundImageApp from "./assets/imgs/background_app.jpg"
 import { WelcomeUser } from './components/WelcomeUserComponent/WelcomeUserComponent';
-import { LOCALSTORAGE_PAYMENTS } from './utils/constants';
+import { PaymentContext, PaymentProvider } from './paymentContext';
 
 /*
 const todos = [
@@ -48,114 +48,79 @@ const styleBackground = {
   }
 }
 
-function useLocalStorage() {
-
-  const localStorageItem = localStorage.getItem(LOCALSTORAGE_PAYMENTS)
-  let parsedItem;
-
-  if(!localStorageItem) {
-    localStorage.setItem(LOCALSTORAGE_PAYMENTS, JSON.stringify([]));
-    parsedItem = [];
-  } else {
-    parsedItem = JSON.parse(localStorageItem);
-  }
-
-  const [item, setItem] = React.useState(parsedItem);
-
-  const saveItems = (newPayments) => {
-    let stringlifiedPayments = JSON.stringify(newPayments);
-    localStorage.setItem(LOCALSTORAGE_PAYMENTS, stringlifiedPayments)
-    setItem(newPayments);
-  }
-
-  return [
-    item,
-    saveItems
-  ]
-
-} 
 
 function App() {
-  const [payments, savePayments] = useLocalStorage();
-  //const [payments, setPayments] = useState(parsedItem);
-
-
+  
   const [isDarkTheme, setIsDarkTheme] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-
-
-  const completedTodo = payments.filter(todo => todo.completed === true).length;
-  const totalTodos = payments.length;
-
-  var searchedValues = [];
-
-  if(searchValue.length>=1){
-    searchedValues = payments.filter(todo => {
-      const bodyText = todo.text.toLowerCase();
-      const searchText = searchValue.toLowerCase();
-      return bodyText.includes(searchText)
-    })
-  } else {
-    searchedValues = payments
-  }
-
-  const deletePayment = (idToDelete) => {
-    console.log("Deleteing in " + idToDelete)
-    console.log(idToDelete)
-    var todoIndexToDelete = payments.findIndex(todo => todo.id == idToDelete);
-
-    const newPayments = [...payments];
-    newPayments.splice(todoIndexToDelete, 1);
-    savePayments(newPayments);
-  }
 
   const changeTheme = () => {
     setIsDarkTheme(!isDarkTheme);
   };
 
+  const { 
+    error, 
+    loading, 
+    searchedValues, 
+    deletePayment
+  } = React.useContext(PaymentContext)
+
 
   return (
       <React.Fragment>
         <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light) }>
-          <Grid container >
-              <Grid item md={6} lg={6} xl={6} sx={{ display: { xs: 'none', sm: 'none', md: 'block', lg: 'block', xl: 'block' }}}>
-                <Container maxWidth='md' style={styleBackground.backgroundCommonBackground} >
-                  <Stack>
-                    <WelcomeUser/>
-                    <Image src={financyImage} height="100vh" fit='contain'/>
-                  </Stack>
-                </Container>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                <Container maxWidth='lg'>
-                  <Stack>
-                    <TodoCounter
-                      total={totalTodos}
-                      completedTodos={completedTodo}
-                    />
-                    <TodoSearch
-                      searchValue={searchValue}
-                      setSearchValue={setSearchValue}
-                    />
-                    <TodoList>
-                      {searchedValues.map(todo => (
-                        <TodoItem key={todo.id}
-                          text={todo.text} 
-                          id={todo.id}
-                          onDelete={() => deletePayment(todo.id)}
-                        />
-                      ))}
-                    </TodoList>
-                  </Stack>
-                </Container>
-              </Grid>
-          </Grid>
+          <PaymentProvider>
 
-          <CreateTodoButtom/>
-          <Button>+</Button>
-          <Button onClick={() => changeTheme()}>Change Theme</Button>
+            <Grid container >
+                <Grid item md={6} lg={6} xl={6} sx={{ display: { xs: 'none', sm: 'none', md: 'block', lg: 'block', xl: 'block' }}}>
+                  <Container maxWidth='md' style={styleBackground.backgroundCommonBackground} >
+                    <Stack>
+                      <WelcomeUser/>
+                      <Image src={financyImage} height="100vh" fit='contain'/>
+                    </Stack>
+                  </Container>
+                </Grid>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                  <Container maxWidth='lg'>
+                    <Stack>
+                      <TodoCounter/>
+                      <TodoSearch/>
+                      <PaymentContext.Consumer>
 
-          <ThemeAppSwitcher/>
+                        {({ 
+                          error, 
+                          loading, 
+                          searchedValues, 
+                          deletePayment
+                        }) => (
+                          <TodoList>
+                            {error && <p>Ocurrió un error...</p>}
+                            {loading && <p>Cargando...</p>}
+                            {(!loading && !searchedValues.length) && <p>Agrega tu primer pago/gasto</p>}
+                            {searchedValues.map(todo => (
+                              <TodoItem key={todo.id}
+                                text={todo.text} 
+                                id={todo.id}
+                                onDelete={() => deletePayment(todo.id)}
+                              />
+                            ))}
+                          </TodoList>
+                        )}
+
+                      </PaymentContext.Consumer>
+
+                      
+                    </Stack>
+                  </Container>
+                </Grid>
+            </Grid>
+
+            <CreateTodoButtom/>
+            <Button>+</Button>
+            <Button onClick={() => changeTheme()}>Change Theme</Button>
+
+            <ThemeAppSwitcher/>
+
+          </PaymentProvider>
         </ThemeProvider>
       </React.Fragment> 
   );
